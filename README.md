@@ -3,11 +3,11 @@ R and Python Code for paper under review at the Journal of Data Science. The cur
 
 Python steps
 
-Save your network in a data set 'Network.txt'. They key columns are: Col1 = BeneID, Col3 = SFROMDT, Col6 = PRFNPI, Col21 = WorkRVU
- BeneID = Beneficiary ID \\
- SFROMDT = Date of patient-physician encounter \\
- PRFNPI = Physician ID \\
- WorkRVU = Measure of average amount of physician effort related to encounter \\
+Save your network in a data set 'Network.txt'. The key columns are: <br/>
+ Col1 = BeneID = Beneficiary ID <br/>
+ Col2 = SFROMDT = Date of patient-physician encounter <br/>
+ Col3 = PRFNPI = Physician ID <br/>
+ Col4 = WorkRVU = Measure of average amount of physician effort related to encounter 
  
 Step 1: Run Script1_FormNetworks.py to form the 20 directed and 20 undirected weighted networks. This generates 3 output files.
 Step 2: Run Script2_BinaryFilter.py to obtain the binary versions of the networks computed in Step 1
@@ -28,19 +28,19 @@ Predictive Power
 Step 1: Run PredPowerModels.r to obtain estimates of Predictive Power under each projection method and for the model with the base design's measures added as additional predictors
 Step 2: Run NetPredPowerAnal.r to obtain absolute and percentage improvement in predictive power for each projection method compared to the base design.  
 
-The names of the network summary measures formed in the Pythin script and analyzed in the R script are: 
-"Nodes" = Size of network
-"Density" = Network density
-"Specialization" = Variance of (undirected) degree distribution
-"CorDeg_InOut" = Correlation between actor in-degree and receiver out-degree
-"Assort_InIn" = Correlation between sender in-degree and receiver in-degree
-"Assort_InOut" = Correlation between sender in-degree and receiver out-degree
-"Assort_OutIn" = Correlation between sender out-degree and receiver in-degree
-"Assort_OutOut" = Correlation between sender out-degree and receiver out-degree
-"Reciprocity" = Reciprocity of edge status
-"Transitivity" = Transitivity coefficient
-"Ave_Clustering" = Average of the local (egocentric) clustering coefficient
-"Ncomponents" = Number of components in the network
-"Diameter" = Diameter of the network
-"sumTransitivity" = Total number of transitive triads in the directed network
+The names of the network summary measures formed in the Pythin script and analyzed in the R script are: <br/>
+"Nodes" = Size of network <br/>
+"Density" = Network density <br/>
+"Specialization" = Variance of (undirected) degree distribution <br/>
+"CorDeg_InOut" = Correlation between actor in-degree and receiver out-degree <br/>
+"Assort_InIn" = Correlation between sender in-degree and receiver in-degree <br/>
+"Assort_InOut" = Correlation between sender in-degree and receiver out-degree <br/>
+"Assort_OutIn" = Correlation between sender out-degree and receiver in-degree <br/>
+"Assort_OutOut" = Correlation between sender out-degree and receiver out-degree <br/>
+"Reciprocity" = Reciprocity of edge status <br/>
+"Transitivity" = Transitivity coefficient <br/>
+"Ave_Clustering" = Average of the local (egocentric) clustering coefficient <br/>
+"Ncomponents" = Number of components in the network <br/>
+"Diameter" = Diameter of the network <br/>
+"sumTransitivity" = Total number of transitive triads in the directed network <br/>
 "sum3Cycle" = Total number of closed 3-cycles in the directed network
