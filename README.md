@@ -4,14 +4,14 @@ R and Python Code for paper under review at the Journal of Data Science. The cur
 Python steps
 
 Save your network in a data set 'Network.txt'. They key columns are: Col1 = BeneID, Col3 = SFROMDT, Col6 = PRFNPI, Col21 = WorkRVU
- BeneID = Beneficiary ID
- SFROMDT = Date of patient-physician encounter
- PRFNPI = Physician ID
- WorkRVU = Measure of average amount of physician effort related to encounter
+ BeneID = Beneficiary ID \\
+ SFROMDT = Date of patient-physician encounter \\
+ PRFNPI = Physician ID \\
+ WorkRVU = Measure of average amount of physician effort related to encounter \\
  
 Step 1: Run Script1_FormNetworks.py to form the 20 directed and 20 undirected weighted networks. This generates 3 output files.
 Step 2: Run Script2_BinaryFilter.py to obtain the binary versions of the networks computed in Step 1
-Step 3: Run Script3_BatchSubNetworks.py to break the network into components corresponding to study units (in our case, the 4800 hospitals). If you only have a single network change nbatches from 160 to 1.
+Step 3: Run Script3_BatchSubNetworks.py to break the network into components corresponding to study units (in our case, the 4800 hospitals) and combines the weighted and the binary projections together (80 in total). A separate file that shows the individuals (in our case, the physicians) in each study unit is needed. If you only have a single network change nbatches from 160 to 1.
 Step 4: Run Script4_SummaryMeasures.py to compute the 16 network summary measures for each network and each of the 80 projections
 
 R steps
