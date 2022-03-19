@@ -5,28 +5,15 @@
 \margl1440\margr1440\vieww17000\viewh11700\viewkind0
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
 
-\f0\fs22 \cf2 \CocoaLigature0 ## James 8/31/2021 ##\
-#The output files following this program contain is the referral paths and the network measures for the\
+\f0\fs22 \cf2 \CocoaLigature0 #First generates referral paths and then calculates the edge weights by considering intermediate or return \
+#    visits or not, to retain as directed or reduce to undirected, and to leave as weighted or reduce to binary.\
+#The output files from this script include the referral paths and the network measures for the\
 # 20 ways of forming directed and the undirected networks (dyad ID in column 1, measures 1-20 in cols 2-21)\
-#The binary script applies a threshold to make the directed and the undirected networks binary, yield\
-#The PHN script splits things by PHN (need a separate file with the physician IDs in each hospital) and\
-# combines the 4*20 measures for that PHN\
-#The final file outputs the summary measures as rows in a file with 80 rows for the network measures\
-# and outputs physician specific measures for each physician in each network in a separate file. \
 \
 #!/usr/bin/env python3\
 # -*- coding: utf-8 -*-\
 \
-Created on Mon Feb 25 10:59:23 2019\
-\
-@author: created by Chuankai An, adapted by Xin Ran, adapted by James O'Malley\
-\
-1. Generate referral paths and then calculate the edge weights by considering intermediate or return \
-    visits or not. Weighted, both directed and undirected.\
-2. Adapted from Chuankai An's script.\
-3. Major adaptation: break into functions, utilize global variables\
-\
-# some nodes are connected/not connected under different criteria\
+@author: created by Chuankai An, adapted by Xin Ran and by James O'Malley\
 \
 import math\
 #from sets import Set\
