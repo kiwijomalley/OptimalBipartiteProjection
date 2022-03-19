@@ -1,26 +1,10 @@
-## Raw network data loaded from Chuankai's files created by Xin under DUA 14593. ##
-
-#Data sets containing network-level and node-level network statistics for each of 80 ways of building physician
+#Reads in data sets containing network-level statistics for each of 80 ways of building physician
 # network for each PHN
-
-## To do: Need to think about standardizing within-variance across designs so that (e.g.) don't simply get a bigger variance because the
-##  weights were very large. Use of ICC is fine as that is self-standardized but ideally might want to standardize this too.
 
 library(lme4)
 setwd("/projects/active/14593/programs/jomalley/SmartNetwork")
-#datdir="../Data/"
-#datdir="/projects/active/26225/idata/CAn/new-weights-network/2011/PHN-subnetwork/output-"
-#26225/idata/CAn/new-weights-network
-#outdir="/projects/active/26225/idata/jomalley/SmartNetwork/"
-
-#New location: 14593 directory
 datdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2010/output-"
-#Builds with self-edges deleted
-#datdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2011/output-"
 outdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2010/SmartNetwork/"
-#outdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2011/SmartNetwork/"
-
-# To do: see if can combine measures into one to define for directed/undirected and weighted/binary !!!
 
 Nbatch=30 #30 when all data is produced
 Nnet=160
@@ -75,36 +59,13 @@ alltriads <- apply(netdata[,13:27],1,'sum') #Sum's to 100000 as samples were tak
 netdata$sumTrans <- netdata$sumTrans/100000 #Not perfect; get some values > 1
 netdata$sum3Cycle <- netdata$sum3Cycle/100000 #Not perfect; get some values > 1
 netdata$centralization <- netdata$centralization/((netdata$density_str*(netdata$size-1))^2) #Relative to degree
-#ind <- (netdata$Binary==0 & netdata$Type==3)
-#netdata$centralization[ind] <- netdata$centralization[ind]/2 #Type 3 otherwise seems to double centralization
-#ind <- (netdata$Binary==0) #Only changes among binary-valued designs because type has minimal impact there
-#tmpdata <- netdata[ind,]
-#relwts <- tapply(tmpdata$density_str,tmpdata$Type,'mean',na.rm=TRUE)
-#relwts <- rep(relwts/relwts[1],times=nrow(netdata)/5)
-#relwts[!ind] <- 1
-#netdata$density_str=netdata$density_str/relwts #Makes them have the same mean 
-#tapply(netdata$density_str,netdata$Type,'mean',na.rm=TRUE) #Check
 
-#New (fairer) method: This step seems to remove variation between hospitals for the undirected designs
-# Perhaps this is because the resulting strength ratios for undirected designs no longer vary between hospitals
-# whereas those for directed designs do? Need to argue for this in paper.
-# Or should separate standardizations be done for 26 (weighted) and 66 (binary)?
-#Note in paper that use of ratio justifies the ICC summary analysis as the ratios are like repeated
-# measurements?
 relwtsbase <- 66 #Base = binary, undirected, type 1, intermediate allowed and revisit not required
 relwts <- tapply(netdata$density_str,netdata$Mthd,'mean',na.rm=TRUE)
 relwtsvec <- rep(relwts/relwts[relwtsbase],times=nrow(netdata)/80) #80 = Number of distinct designs
 netdata$density_str=netdata$density_str/relwtsvec #Makes density/strength have same mean as base design 
 tapply(netdata$density_str,netdata$Mthd,'mean',na.rm=TRUE) #Check
 tapply(netdata$centralization,netdata$Mthd,'mean',na.rm=TRUE) #Check
-
-#Check distributions for symmetry and associations
-#cor(netdata$density_str,netdata$tsize,use="pairwise.complete.obs")
-#quantile(netdata$density_str,seq(0,1,0.1),na.rm=TRUE)
-#quantile(netdata$centralization,seq(0,1,0.1),na.rm=TRUE)
-#quantile(netdata$cor_inout,seq(0,1,0.1),na.rm=TRUE)
-#quantile(netdata$assort_inin,seq(0,1,0.1),na.rm=TRUE)
-#quantile(netdata$trans,seq(0,1,0.1),na.rm=TRUE)
 
 #Standardize network measures to make them comparable across measures (for pooled across measures analysis) by having SD of 1 across entire data set
 stdev <- sqrt(apply(netdata[,1:31],2,'var',na.rm=TRUE))

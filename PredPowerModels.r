@@ -1,42 +1,22 @@
-## Raw network data loaded from Chuankai's files created by Xin under DUA 14593. ##
-
-#Instead of focusing on the ICC of the network measures themselves, we predict the likelihood of the PHN
+#Evaluation of predictive accuracy for predicting the likelihood of the PHN
 # having adopted ICD capability. 
 #We compare the level of predictability across the 80 designs (separate models per design)
-#Only have phn data in 2011 so can only run 2011 cross-sectional (2011 network) and longitudinal (2010 network) for now
-
-
-#To do: Run measure-specific variants
-#       Make plots of performance and see if network-build method interacts with measure
-#       Pair with ICC values
-#       Consider ICD volume measures, adoption, de-option over consecutive years
-#       Decide on best format for Adopt before considering other outcomes
-# Diameter and number of components have been re-added. Need to redo that part of results
-
+#Only have phn data in 2011 so regress 2011 icd status on 2010 network measures
 
 library(lme4)
 setwd("/projects/active/14593/programs/jomalley/SmartNetwork")
-#datdir="../Data/"
-#datdir="/projects/active/26225/idata/CAn/new-weights-network/2011/PHN-subnetwork/output-"
-#26225/idata/CAn/new-weights-network
-#outdir="/projects/active/26225/idata/jomalley/SmartNetwork/"
-
-#New location: 14593 directory
 datdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2010/output-"
-#Builds with self-edges deleted
-#datdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2011/output-"
-#phndir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2010" #Same as for 2011
 phndir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2011"
-#outdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2010/SmartNetwork/"
 outdir="/projects/active/14593/idata/core_c/core_c_jomalley/PHN-subnetwork/2011/SmartNetwork/"
 
-###########################################################
+##########################################################################################
 # Function OptimisedConc : for concordance, discordance, ties
 # The function returns Concordance, discordance, and ties
 # by taking a glm binomial model result as input.
 # Although it still uses two-for loops, it optimises the code
 # by creating initial zero matrices
-###########################################################
+# Reference: http://shashiasrblog.blogspot.com/2014/01/binary-logistic-regression-on-r.html
+###########################################################################################
 OptimisedConc=function(model)
 {
   Data = cbind(model$y, model$fitted.values) 
@@ -63,8 +43,6 @@ OptimisedConc=function(model)
   PercentTied=(sum(ties)/Pairs)*100
   return(list("Percent Concordance"=PercentConcordance,"Percent Discordance"=PercentDiscordance,"Percent Tied"=PercentTied,"Pairs"=Pairs))
 }
-
-# To do: see if can combine measures into one to define for directed/undirected and weighted/binary !!!
 
 Nbatch=30 #30 when all data is produced
 Nnet=160
@@ -104,8 +82,7 @@ netdata[ind]=NA
 indrow=(netdata$size<=20) 
 netdata[indrow,3:(ncol(netdata)-1)]=NA #Don't want to override netid
 
-#Add design variables based on Chuankai's scheme (easy to do here as just repeat for each of the Nnetworks)
-# Will need to define these factors directly from Mthd to build into physician-level data later
+#Add design variables for each of the Nnetworks
 type=rep(seq(1,5),times=80/5)
 interm=rep(rep(c(0,1),each=5),times=80/10)
 revisit=rep(rep(c(0,1),each=10),times=80/20)
@@ -127,18 +104,8 @@ if (wantstand==1) {
  netdata$sumTrans <- netdata$sumTrans/100000 #Not perfect; get some values > 1
  netdata$sum3Cycle <- netdata$sum3Cycle/100000 #Not perfect; get some values > 1
  netdata$centralization <- netdata$centralization/((netdata$density_str*(netdata$size-1))^2)
- #ind <- (netdata$Binary==0 & netdata$Type==3)
- #netdata$centralization[ind] <- netdata$centralization[ind]/2 #Type 3 otherwise seems to have double the centralization
- #ind <- (netdata$Binary==0) #Only changes among binary-valued designs!
- #tmpdata <- netdata[ind,]
- #relwts <- tapply(tmpdata$density_str,tmpdata$Type,'mean',na.rm=TRUE)
- #relwts <- rep(relwts/relwts[1],times=nrow(netdata)/5)
- #relwts[!ind] <- 1
- #netdata$density_str=netdata$density_str/relwts #Makes them have the same mean 
- #tapply(netdata$density_str,netdata$Type,'mean',na.rm=TRUE) #Check
-
- #New (fairer) way (should separate standardizations be done for 26 and 66)?
- relwtsbase <- 66 #Base = binary, undirected, type 1, intermediate allowed and revisit not required
+ 
+relwtsbase <- 66 #Base = binary, undirected, type 1, intermediate allowed and revisit not required
  relwts <- tapply(netdata$density_str,netdata$Mthd,'mean',na.rm=TRUE)
  relwtsvec <- rep(relwts/relwts[relwtsbase],times=nrow(netdata)/80) #80 = Number of distinct designs
  netdata$density_str=netdata$density_str/relwtsvec #Makes density/strength have same mean as base design 
@@ -152,9 +119,6 @@ if (wantstand==1) {
  netdata[,1:31] <- netdata[,1:31]/scalemat
 }
 
-#Want to show that can do better than base model. Comparison of ICCs is helpful
-# Might be better to use predictors from base model (the undirected measures when networks designed using no restrictions, type 1
-# processing of referral pathway, undirected network) for both binary and weighted networks.
 basemeasure <- c("size","nisolate","density_str","centralization","trans","avg_clust","Ncomponent","diam","netid","Binary")
 indbase <- (netdata$Type==1 & netdata$Interm==1 & netdata$Revisit==0 & netdata$Directed==0) #Mthd = 26 (weighted), 66 (binary)
 datbase <- netdata[indbase,basemeasure]
