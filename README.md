@@ -28,7 +28,7 @@ Predictive Power
 Step 1: Run PredPowerModels.r to obtain estimates of Predictive Power under each projection method and for the model with the base design's measures added as additional predictors. <br/>
 Step 2: Run NetPredPowerAnal.r to obtain absolute and percentage improvement in predictive power for each projection method compared to the base design. <br/> 
 
-The names of the network summary measures formed in the Pythin script and analyzed in the R script are: <br/>
+The names of the network summary measures formed in the Python script and analyzed in the R script are: <br/>
 "Nodes" = Size of network <br/>
 "Density" = Network density <br/>
 "Specialization" = Variance of (undirected) degree distribution <br/>
