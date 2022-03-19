@@ -8,6 +8,7 @@
 
 @author: created by Chuankai An, adapted by Xin Ran and by James O'Malley
 
+"""
 import math
 #from sets import Set
 from datetime import datetime, date, time
@@ -289,7 +290,7 @@ def main():
     
     filePath1 = "/projects/active/54054/idata/jomalley/raw-data_Sound.txt"
       
-    filePath2 = '/projects/active/54054/idata/jomalley/'\
+    filePath2 = '/projects/active/54054/idata/jomalley/'
 
     # save the HRR-specific results
     # filePath3 = '/projects/active/14593/Project3_HospClosure_VQI/programs/xran/networkResults/existence_updated/HRR-specific/'
