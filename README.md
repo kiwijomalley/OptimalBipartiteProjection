@@ -1,5 +1,5 @@
 # OptimalBipartiteProjection
-R and Python Code for paper under review at the Journal of Data Science. The current version of the scripts are setup to run directly on the data set for our motivating example. This contains a lot of supurfluous information from administrative claims data that is not used in the analyses in the current paper. It is anticipated that the script will in time be simplified to a barebones version. Note that the data wrangling and data analysis are performed in distinct steps because the raw data is patient confidential and can only be analyzed behind a firewall.
+R and Python Code for manuscript currently under review. The current version of the scripts are setup to run directly on the input and interim data sets for our motivating example. The analyzed raw data set is an administrative claims data set that is not able to be made publically available. The data wrangling and data analysis are performed in distinct steps because the raw data is patient confidential and can only be analyzed behind a firewall. In future work and post paper acceptance, it is anticipated that the script for generating edge-lists from the claims data for forming the various types of networks will undergo further development that will aid its general usage. 
 
 Python steps
 
